@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://agrisig/skin/icons.css" type="text/css"?>
+<!-- CE FICHIER A ETE GENERE PAR GENERATEUR_INTERFACE_LIB -->
+
+<window
+	id="Page_Interface"
+	title="Page de Interface"
+	orient="horizontal"
+	sizemode="normal"
+	onload="Charger_Interface();"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<!-- FICHIERS DE SCRIPTS NECESSAIRES -->
+
+<script src="../pgsql.js"/>
+<script src="../pointer.js"/>
+<script src="../generateur_interface_sql.js"/>
+<script src="../generateur_interface_xul.js"/>
+<script src="cap2.js"/>
+
+<!-- COMPOSANT OU SE DESSINERONT LES COMPOSANTS -->
+
+<tabbox id='test' flex="1">
+   
+   <tabs id='milieu_tabs'>
+      <tab id='onglet_personne' label='Personne'/>
+      <tab id='onglet_adresse' label='Adresse(s)'/>
+      <tab id='onglet_dossier' label='Dossier(s)'/>
+      <tab id='onglet_abonnement' label='Abonnement(s)'/>
+   </tabs>
+
+<tabpanels flex="1">
+<tabpanel>
+<hbox flex="1">
+   <vbox id="0_Maitre" flex="2"/>
+   <splitter collapse="none" />
+
+   <vbox flex="3"  style="overflow:auto">
+
+     <hbox>
+        <!-- 0_Slaves -->
+	<groupbox>
+        <vbox id="haut_gauche" flex="1"/>
+	</groupbox>
+	<groupbox>
+	<vbox id="haut_droit" flex="1"/>
+	</groupbox>
+	<vbox>
+	  <button label="Ajouter" accesskey="a"/>
+	  <button label="Modifier" accesskey="m" />
+	</vbox>
+     </hbox>
+
+     <hbox flex="1">
+        <!-- Contact -->
+        <vbox id="1_Maitre" flex="1"/>
+        <!-- Observation -->
+	<vbox id="2_Maitre" flex="1"/>
+     </hbox>
+
+     <hbox flex="1">
+        <!-- Cotisation -->
+        <vbox id="3_Maitre" flex="1"/>
+        <!-- Responsabilite --> <!-- vaguement -->
+	<vbox id="4_Maitre" flex="1"/>
+     </hbox>
+   </vbox>
+</hbox>
+</tabpanel>
+
+<tabpanel> <!-- Adresse -->
+     <hbox flex="1">
+     <groupbox>
+        <caption label="Adresse complète"/>
+        <vbox id="5_Slaves" flex="1"/>
+     </groupbox>
+	<vbox id="5_Maitre" flex="1"/>
+     </hbox>
+</tabpanel>
+
+<tabpanel>
+     <hbox flex="1">
+	<vbox>
+	   <groupbox id="gb_dossier">
+	      <caption label="Information"/>
+              <!-- Information Dossier --> 
+	      <vbox id="6_Slaves"/>
+	   </groupbox>
+	   <hbox>
+	      <button label="Facture" accesskey="f"/>
+	      <button label="Modifier Dossier" accesskey="m"/>
+	      <button label="Ajouter Ajouter" accesskey="a"/>
+	   </hbox>	
+	</vbox>
+	<vbox flex="1">
+	   <!-- Liste des dossiers -->
+	   <vbox id="6_Maitre" flex="1"/>
+	   <!-- Liste des travaux pour un dossier -->
+	   <vbox id="7_Maitre" flex="1"/>
+	</vbox>
+     </hbox>
+</tabpanel>
+
+<tabpannel>
+     <vbox flex="1">
+       <hbox flex="1">
+         <groupbox>
+	 <caption label="Information"/>
+	 <!-- Information abonnement -->
+         <vbox id="8_Slaves" flex="1"/>
+	 </groupbox>
+         <!-- Date des abonnements -->
+         <vbox id="8_Maitre" flex="1"/>
+	
+       </hbox>
+
+       <hbox flex="1">
+	  <vbox>
+	   <groupbox>
+	   <caption label="Adresse"/>
+	   <vbox id="9_Slaves"/>
+	   </groupbox>
+	   <button label="Ajouter Destinataire" accesskey="a"/>
+	   <button label="Modifier Destinataire" accesskey="m"/>
+	   <button label="Supprimer Destinataire" accesskey="s"/>
+	 </vbox>
+	 <vbox id="9_Maitre" flex="1"/>
+	</hbox>
+      </vbox>
+</tabpannel>
+
+</tabpanels>
+</tabbox>
+
+</window>
+
+

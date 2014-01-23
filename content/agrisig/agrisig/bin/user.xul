@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://agrisig/skin/barre_carte.css" type="text/css"?>
+<?xml-stylesheet href="chrome://agrisig/skin/icons.css" type="text/css"?>
+<?xml-stylesheet href="chrome://browser/skin" type="text/css"?>
+
+<window
+    id="agrisig-user"
+    title="Gestion des utilisateurs d'AgriSIG"
+    orient="vertical"
+    sizemode="normal"
+    onload="user_init();"
+    xmlns:html="http://www.w3.org/1999/xhtml"
+    xmlns:svg="http://www.w3.org/2000/svg"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script src="agrisig_SVG.js"/>
+  <script src="user.js"/>
+  <script src="pgsql.js"/>
+
+  <vbox>
+    <stack flex="1" >
+      <image flex="1" height="58" width="496" src="banniere.jpg"/>
+      <description top="10" left="20" class="header">Gestion des utilisateurs-exploitants</description>
+      <description top="25" left="35">Créer, modifier et supprimer des utilisateurs d'AgriSIG</description>
+      <hbox pack="end" style="padding: 3px;">
+        <image src="icone3.png"/>
+      </hbox>
+    </stack>
+    <separator flex="1" class="groove-thin"/>  
+  </vbox>
+  <hbox flex="1" style="padding:10px;"><!-- height="249">-->
+    <vbox flex="1" id="user-table">
+      <tree id="user-tree" flex="1" minheight="229" seltype="single" datasources="rdf:null" ref="SQL:ResultRoot" flags="dont-build-content" onselect="user_charge();">
+        <treecols id="user-tree-header">
+          <treecol id="user-tree-login"  flex="1" label="Login"  sort="rdf:http://www.mozilla.org/SQL-rdf#us_login"  sortActive="true"/>
+	  <splitter class="tree-splitter"/>
+          <treecol id="user-tree-nom"    flex="1" label="Nom"    sort="rdf:http://www.mozilla.org/SQL-rdf#us_nom"    sortActive="true"/>
+	  <splitter class="tree-splitter"/>
+          <treecol id="user-tree-prenom" flex="1" label="Prenom" sort="rdf:http://www.mozilla.org/SQL-rdf#us_prenom" sortActive="true"/>
+	  <splitter class="tree-splitter"/>
+          <treecol id="user-tree-niveau" flex="1" label="Niveau" sort="rdf:http://www.mozilla.org/SQL-rdf#us_niveau" sortActive="true"/>
+	  <splitter class="tree-splitter"/>
+          <treecol id="user-tree-valable" flex="1" label="Jusqu'au" sort="rdf:http://www.mozilla.org/SQL-rdf#us_validite" sortActive="true"/>
+	  <splitter class="tree-splitter"/>
+          <treecol id="user-tree-statut" flex="1" label="Statut" sort="rdf:http://www.mozilla.org/SQL-rdf#us_statut" sortActive="true"/>
+        </treecols>
+        <template>
+          <treechildren>
+            <treeitem uri="rdf:*">
+              <treerow>
+                <treecell label="rdf:http://www.mozilla.org/SQL-rdf#us_login" value="rdf:http://www.mozilla.org/SQL-rdf#us_login"/>
+                <treecell label="rdf:http://www.mozilla.org/SQL-rdf#us_nom"/>
+                <treecell label="rdf:http://www.mozilla.org/SQL-rdf#us_prenom"/>
+                <treecell label="rdf:http://www.mozilla.org/SQL-rdf#us_niveau"/>
+                <treecell label="rdf:http://www.mozilla.org/SQL-rdf#us_validite"/>
+                <treecell label="rdf:http://www.mozilla.org/SQL-rdf#us_statut" value="rdf:http://www.mozilla.org/SQL-rdf#us_exclu"/>
+              </treerow>
+            </treeitem>
+          </treechildren>
+        </template>
+
+      </tree>
+    </vbox>
+    <vbox flex="1" id="user-user" hidden="true">
+      <hbox align="center">
+        <label control="user-prop-login" value="Login"/>
+        <textbox id="user-prop-login" flex="1"/>
+      </hbox>
+      <hbox align="center">
+        <label control="user-prop-nom" value="Nom"/>
+        <textbox id="user-prop-nom" flex="1"/>
+      </hbox>
+      <hbox align="center">
+        <label control="user-prop-prenom" value="Prénom"/>
+        <textbox id="user-prop-prenom" flex="1"/>
+      </hbox>
+      <hbox align="center">
+        <label control="user-prop-pac" value="Numéro PAC"/>
+        <textbox id="user-prop-pac" flex="1"/>
+      </hbox>
+      <groupbox>
+        <caption>
+          <checkbox id="user-prop-usemdp" label="Saisie du mot de passe" checked="true"/>
+        </caption>
+        <hbox align="center">
+          <label control="user-prop-mdp" value="Mot de passe"/>
+          <textbox id="user-prop-mdp" type="password" flex="1"/>
+        </hbox>
+        <hbox align="center">
+          <label control="user-prop-mdpv" value="Confirmation du mot de passe"/>
+          <textbox id="user-prop-mdpv" type="password" flex="1"/>
+        </hbox>
+      </groupbox>
+      <hbox align="center">
+        <checkbox id="user-prop-admin" label="Administrateur" flex="1"/>
+        <checkbox id="user-prop-valide" label="Compte valide jusqu'au"/>
+        <textbox id="user-prop-valide-date" flex="1"/>
+        <label control="user-prop-valide-date" value=" compris"/>
+      </hbox>
+    </vbox>
+  </hbox>
+  <vbox height="51">
+    <separator class="groove"/>
+    <hbox flex="1" align="center" pack="end">
+      <button width="74" id="user-button-insert" oncommand="user_insert();" label="Nouveau"/>
+      <button width="74" id="user-button-update" oncommand="user_update();" label="Modifier"/>
+      <button width="74" id="user-button-active" oncommand="user_active();" label="-"/>
+      <button width="74" id="user-button-delete" oncommand="user_delete();" label="Supprimer"/>
+      <button width="74" id="user-button-finish" oncommand="user_finish();" label="Enregistrer"/>
+      <button width="74" id="user-button-cancel" oncommand="user_cancel();" label="Annuler"/>
+      <button width="74" id="user-button-close" oncommand="window.close();" label="Fermer" tabindex="0"/>
+      <box width="5"/>
+    </hbox>
+  </vbox>
+</window>

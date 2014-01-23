@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<!--
+<?xml-stylesheet href="chrome://agrisig/skin/icons.css" type="text/css"?>
+-->
+<window id="gestsea-generation" title="Génération de l'interface GestSEA" orient="vertical" sizemode="normal" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script src="chrome://agrisig/content/gestseax/generateur/pgsql.js"/>
+  <script src="chrome://agrisig/content/gestseax/generateur/pointer.js"/>
+  <script src="chrome://agrisig/content/gestseax/generateur/generateur_interface_sql.js"/>
+  <script src="chrome://agrisig/content/gestseax/generateur/generateur_interface_xul.js"/>
+  <script src="chrome://agrisig/content/gestseax/generateur/libIO.js"/>
+  <script src="chrome://agrisig/content/gestseax/generateur/generateur_interface_lib.js"/>
+  <script src="chrome://agrisig/content/gestseax/source/gestsea-principal.js"/>
+  <script src="chrome://agrisig/content/gestseax/gestsea/genesea.js"/>
+  <vbox>
+    <stack flex="1" >
+      <image flex="1" height="58" width="496" src="banniere.jpg"/>
+      <description top="10" left="20" class="header">Génération d'interface</description>
+      <description top="25" left="20" class="indent">Générer l'interface générale</description>
+      <image flex="1" src="gestsea.png" top="3" left="442"/>
+    </stack>
+    <separator flex="1" class="groove-thin"/>  
+  </vbox>
+  <hbox flex="1" style="padding:10px;" height="249">
+    <vbox flex="1">
+      <textbox id="res" disabled="true" flex="1" multiline="true" value=""/>
+<!--      <progressmeter id="res_pm" value="0%"/>-->
+    </vbox>
+  </hbox>
+  <vbox height="51">
+    <separator class="groove"/>  
+    <hbox flex="1" align="center" pack="end">
+      <button label="Générer" oncommand="GenererGestSEA();"/>
+      <button label="Ouvrir" oncommand="window.openDialog('chrome://agrisig/content/gestseax/gestsea/gestsea_principal.xul');"/>
+      <button label="Fermer" oncommand="window.close('genesea.xul');"/>
+      <box width="5"/>
+    </hbox>
+  </vbox>
+</window>

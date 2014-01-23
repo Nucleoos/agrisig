@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://agrisig/skin/icons.css" type="text/css"?>
+
+<window	id="gestsea-generateur"	title="Générateur de 'GestSEA X'" orient="vertical" sizemode="normal" xmlns:html="http://www.w3.org/1999/xhtml" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script src="chrome://agrisig/content/gestseax/generateur/pgsql.js"/>
+  <script src="chrome://agrisig/content/gestseax/generateur/pointer.js"/>
+  <script src="chrome://agrisig/content/gestseax/generateur/generateur_interface_sql.js"/>
+  <script src="chrome://agrisig/content/gestseax/generateur/generateur_interface_xul.js"/>
+  <script src="chrome://agrisig/content/gestseax/generateur/libIO.js"/>
+  <script src="chrome://agrisig/content/gestseax/generateur/generateur_interface_lib.js"/>
+  <script src="chrome://agrisig/content/gestseax/generateur/gestseax-mcd.js"/>
+  <script src="chrome://agrisig/content/gestseax/source/gestsea-constructeur.js"/>
+  <script src="chrome://agrisig/content/gestseax/source/gestsea-comptabilite.js"/>
+  <script src="chrome://agrisig/content/gestseax/source/gestsea-parametrage.js"/>
+  <script src="chrome://agrisig/content/gestseax/source/gestsea-principal.js"/>
+  <script src="chrome://agrisig/content/gestseax/source/gestsea-moto.js"/>
+<!--  <script src="chrome://agrisig/content/gestsea/source/gestsea-general.js"/>-->
+  <script>function jauge(x){document.getElementById('jauge').setAttribute('value',x);}</script>
+  <groupbox>
+    <caption label="Générations des modules"/>
+    <grid>
+      <columns>
+        <column flex="3"/>
+        <column flex="1"/>
+      </columns>
+      <rows>
+        <row>
+          <button label="Générer 'GestSEA Constructeur'"  oncommand="CodeInConstructeur();"/>
+          <button label="Ouvrir" oncommand="window.open('chrome://agrisig/content/gestseax/gestsea/gestsea_constructeur.xul');"/>
+        </row>
+        <row>
+          <button label="Générer 'GestSEA Comptabilité'"  oncommand="CodeInComptabilite();"/>
+          <button label="Ouvrir" oncommand="window.open('chrome://agrisig/content/gestseax/gestsea/gestsea_comptabilite.xul');"/>
+        </row>
+        <row>
+          <button label="Générer 'GestSEA Paramétrage'"  oncommand="CodeInParametrage();"/>
+          <button label="Ouvrir" oncommand="window.open('chrome://agrisig/content/gestseax/gestsea/gestsea_parametrage.xul');"/>
+        </row>
+        <row>
+          <button label="Générer 'GestSEA Principal'"  oncommand="CodeInPrincipal('');"/>
+          <button label="Ouvrir" oncommand="window.open('chrome://agrisig/content/gestseax/gestsea/gestsea_principal.xul');"/>
+        </row>
+        <row>
+          <button label="Générer 'GestSEA MOTO'"  oncommand="CodeInMoto('');"/>
+          <button label="Ouvrir" oncommand="window.open('chrome://agrisig/content/gestseax/gestsea/gestsea_moto.xul');"/>
+        </row>
+        <row>
+          <button label="Générer tous les modules"  oncommand="jauge('0%');CodeInConstructeur();jauge('25%');CodeInComptabilite();jauge('50%');CodeInParametrage();jauge('75%');CodeInPrincipal('');jauge('100%')"/>
+          <progressmeter id="jauge" value="0%"/>
+        </row>
+      </rows>
+    </grid>
+  </groupbox>
+  <hbox>
+    <button label="Gérer les alias" oncommand="pgsql_configaliases();"/>
+    <button label="Venkman Debugger" oncommand="window.open('chrome://venkman/content/','JavaScript Debugger','chrome,centerscreen,resizable');"/>
+  </hbox>
+  <vbox flex="1" style="overflow:auto;height:160px;width:160px;">
+    <textbox id="res" flex="1" multiline="true" value="" />
+  </vbox>
+
+</window>

@@ -1,0 +1,81 @@
+.personal-title {
+  font-weight :bold;
+}
+
+.mybutton{
+  margin-right: 5px;
+  margin-left: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  color: black;
+  font-weight :bold;
+}
+
+button.mybutton:hover{
+  text-decoration:none;
+}
+
+.mybutton[disabled="true"]:hover{
+  color:#444444;
+}
+
+.mybutton[disabled="true"]{
+  color:#888888;
+}
+
+.important[disabled="true"] {
+  color : #880000;
+}
+
+.important {
+  font-weight:bold;
+  color : #AA0000;
+}
+
+groupbox {
+  border-color :#8888CC;
+  background-color: #FFFFEE;
+}
+
+
+caption {
+  color: #4466FF;
+  background-color: white;
+  font-weight :bold;
+  -moz-border-radius:0.4em;
+}
+
+separator {
+  height: 0.6em;
+  background-color : #9999CC;
+  margin-top: 5px;
+}
+
+splitter {
+  width :0.6em;
+  border : 0px solid red;
+  background-color : #4466FF;
+}
+
+splitter:hover{
+  background-color : #66DD44;
+}
+
+.bg {
+  /*  background-color : #EEEEDD;*/
+  background-color : #EEEEFF;
+  
+}
+
+.cancel {
+  color : red;  
+}
+
+.commit {
+  color : green;
+}
+
+treecol:hover {
+ color: red;
+  font-weight :bold;
+}

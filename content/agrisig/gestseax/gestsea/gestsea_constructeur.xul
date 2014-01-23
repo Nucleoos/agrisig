@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://browser/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://agrisig/skin/icons.css" type="text/css"?>
+<!-- CE FICHIER A ETE GENERE PAR GENERATEUR_INTERFACE_LIB -->
+
+<window sizemode="maximized" 
+	id="Page_gestsea_constructeur"
+	title="GestSEA Constructeur - Génération d'interfaces spécifiques"
+	orient="vertical"
+	onload="gestsea_constructeur_Chargement();"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<!-- FICHIERS DE SCRIPTS NECESSAIRES -->
+
+<script src="chrome://agrisig/content/gestseax/generateur/pgsql.js"/>
+<script src="chrome://agrisig/content/gestseax/generateur/utils_xul.js"/>
+<script src="chrome://agrisig/content/gestseax/generateur/pointer.js"/>
+<script src="chrome://agrisig/content/gestseax/generateur/generateur_interface_sql.js"/>
+<script src="chrome://agrisig/content/gestseax/generateur/generateur_interface_xul.js"/>
+<script src="chrome://global/content/nsDragAndDrop.js"/>
+<script src="chrome://global/content/nsTransferable.js"/>
+<script src="chrome://global/content/globalOverlay.js"/>
+<script src="chrome://browser/content/browser.js"/>
+<script src="gestsea_constructeur_plus.js"/>
+<script src="export.js"/>
+<script src="chrome://agrisig/content/gestseax/generateur/gestseax-mcd.js"/>
+<!-- AJOUTER chrome://agrisig/content/Onglets/Agrisig SI NECESSAIRE -->
+<script src="gestsea_constructeur.js"/>
+<script src="gestsea_constructeur_User.js"/>
+<toolbox>
+  <menubar id="menu-application">
+    <menu id="donnee-menu" label="Gestion des données">
+      <menupopup id="donnee-popup">
+      <menuitem label="Classes" oncommand="AllerAOnglet(0)"/>
+      <menuitem label="Types de propriétés" oncommand="AllerAOnglet(1)"/>
+      </menupopup>
+    </menu>
+    <menu id="edition-menu" label="Edition">
+      <menupopup id="edit-popup">
+        <menuitem label="Annuler"/>
+        <menuitem label="Refaire"/>
+      </menupopup>
+    </menu>
+    <menu id="theme-menu" label="Changer de thème">
+      <menupopup id="theme-popup">
+        <menuitem label="Choisir" oncommand="BrowserOpenExtensions('themes')"/>
+      </menupopup>
+    </menu>
+    <menu label="Autres">
+      <menupopup>
+        <menuitem label="Générer 'GestSEA - Général'..." oncommand="LancerGeneSEA()"/>
+      </menupopup>
+    </menu>
+  </menubar>
+</toolbox>
+
+<!-- COMPOSANT OU SE DESSINERONT LES COMPOSANTS -->
+
+<vbox flex="1">
+<tabbox id="Main_Tabbox" flex="1">
+<hbox id="box_overflow" class="tabbrowser-strip chromeclass-toolbar">
+<tabs flex="1" class="tabbrowser-tabs" id="Tous_les_onglets">
+ <tab flex="100" maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Classes" label="Classes"/>
+ <tab flex="100" maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Types_de_propriétés" label="Types de propriétés"/>
+</tabs>
+</hbox>
+<tabpanels id="Tous_les_panels" flex="1">
+<tabpanel flex="1" id="OngletPanel_Classes" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Classes_Liste_des_classes0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox id="Classes_Liste_des_classes0_Slaves"/>
+<hbox flex="1">
+<vbox id="Classes_Propriétés_8" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Classes_Propriétés_8_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button disabled="true" id="Insert_Classes_Propriétés_8" label="Ajouter" oncommand="Insert_Classes_Propriétés_8()" />
+    <button disabled="true" id="Delete_Classes_Propriétés_8" label="Supprimer" oncommand="Delete_Classes_Propriétés_8()" />
+    <button disabled="true" id="Update_Classes_Propriétés_8" label="Modifier" oncommand="Update_Classes_Propriétés_8()" />
+    <button id="Validate_Classes_Propriétés_8" label="Valider" oncommand="Validate_Classes_Propriétés_8()"  disabled="true" />
+    <button id="Annuler_Classes_Propriétés_8" label="Annuler" oncommand="Annuler_Classes_Propriétés_8()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button disabled="true" id="Insert_Classes_Liste_des_classes0" label="Ajouter" oncommand="Insert_Classes_Liste_des_classes0()" />
+    <button disabled="true" id="Delete_Classes_Liste_des_classes0" label="Supprimer" oncommand="Delete_Classes_Liste_des_classes0()" />
+    <button disabled="true" id="Update_Classes_Liste_des_classes0" label="Modifier" oncommand="Update_Classes_Liste_des_classes0()" />
+    <button id="Validate_Classes_Liste_des_classes0" label="Valider" oncommand="Validate_Classes_Liste_des_classes0()"  disabled="true" />
+    <button id="Annuler_Classes_Liste_des_classes0" label="Annuler" oncommand="Annuler_Classes_Liste_des_classes0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Types_de_propriétés" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Types_de_propriétés_Liste_des_types_de_propriétés0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox id="Types_de_propriétés_Liste_des_types_de_propriétés0_Slaves"/>
+<hbox flex="1">
+<vbox id="Types_de_propriétés_Liste_des_choix_2" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Types_de_propriétés_Liste_des_choix_2_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button disabled="true" id="Insert_Types_de_propriétés_Liste_des_choix_2" label="Ajouter" oncommand="Insert_Types_de_propriétés_Liste_des_choix_2()" />
+    <button disabled="true" id="Delete_Types_de_propriétés_Liste_des_choix_2" label="Supprimer" oncommand="Delete_Types_de_propriétés_Liste_des_choix_2()" />
+    <button disabled="true" id="Update_Types_de_propriétés_Liste_des_choix_2" label="Modifier" oncommand="Update_Types_de_propriétés_Liste_des_choix_2()" />
+    <button id="Validate_Types_de_propriétés_Liste_des_choix_2" label="Valider" oncommand="Validate_Types_de_propriétés_Liste_des_choix_2()"  disabled="true" />
+    <button id="Annuler_Types_de_propriétés_Liste_des_choix_2" label="Annuler" oncommand="Annuler_Types_de_propriétés_Liste_des_choix_2()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button disabled="true" id="Insert_Types_de_propriétés_Liste_des_types_de_propriétés0" label="Ajouter" oncommand="Insert_Types_de_propriétés_Liste_des_types_de_propriétés0()" />
+    <button disabled="true" id="Delete_Types_de_propriétés_Liste_des_types_de_propriétés0" label="Supprimer" oncommand="Delete_Types_de_propriétés_Liste_des_types_de_propriétés0()" />
+    <button disabled="true" id="Update_Types_de_propriétés_Liste_des_types_de_propriétés0" label="Modifier" oncommand="Update_Types_de_propriétés_Liste_des_types_de_propriétés0()" />
+    <button id="Validate_Types_de_propriétés_Liste_des_types_de_propriétés0" label="Valider" oncommand="Validate_Types_de_propriétés_Liste_des_types_de_propriétés0()"  disabled="true" />
+    <button id="Annuler_Types_de_propriétés_Liste_des_types_de_propriétés0" label="Annuler" oncommand="Annuler_Types_de_propriétés_Liste_des_types_de_propriétés0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+</vbox>
+</tabpanel>
+</tabpanels>
+</tabbox>
+</vbox>
+<statusbar id="statusbar">
+	<statusbarpanel id="status_espace" label="" width="5"/>
+	<statusbarpanel id="status_login" label=""/>
+	<statusbarpanel id="status_Info" label=""/>
+	<statusbarpanel id="status_TpsExec" flex="1" label=""/>
+</statusbar>
+</window>

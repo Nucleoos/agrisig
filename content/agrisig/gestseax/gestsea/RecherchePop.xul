@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://browser/skin" type="text/css"?>
+
+<!--
+buttons="accept,extra1,cancel"
+  buttonlabelextra1="Appliquer"
+    buttonaccesskeyextra1="A"
+    ondialogaccept="return Saisie_Valider(window.arguments[0][2]);"
+    ondialogextra1="Saisie_Valider(window.arguments[0][1]);return false;">
+    ondialogcancel="return true;"
+
+-->
+<dialog id="Saisie_Float_Window" title="Recherche de personnes"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+    buttons=""
+    onload="OnLoadPop(window.arguments[0],window.arguments[1]);">
+
+<script src="RecherchePop.js"/>
+
+  <hbox>
+  <!--
+    <toolbarbutton oncommand="Prec()" tooltiptext="Précédent" id="back-button" class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+    <toolbarbutton oncommand="Suiv()" tooltiptext="Suivant" id="forward-button" class="toolbarbutton-1 chromeclass-toolbar-additional"/>
+    <label id="Enrg" value="1"/>
+  -->
+    <label id="MaxEnrg" value=""/>
+    <label value="personne(s) trouvée(s)"/>
+  </hbox>
+
+  <tree id="arbre" seltype="single" flex="1"
+    datasources="rdf:null" ref="SQL:ResultRoot" flags="dont-build-content" style="min-height:400px;min-width:640px" onselect="tree_select(this)">
+    <treecols  disabled="true">
+      <treecol flex="2" label="N° Adhérent"  persist="hidden" id="pe_numerofede"/>
+      <treecol flex="1" label="Titre"  persist="hidden" id="pe_titre"/>
+      <treecol flex="5" label="Nom Prénom (Titre)"  persist="hidden" id="pe_nom"/>
+      <treecol flex="1" label="Complement"  persist="hidden" id="pe_complement"/>
+    </treecols>
+      <template>
+        <treechildren id="arbreChild">
+          <treeitem uri="rdf:*">
+            <treerow  properties="makeItRed" disabled="true">
+              <treecell label="rdf:http://www.mozilla.org/SQL-rdf#pe_numero" value="rdf:http://www.mozilla.org/SQL-rdf#pe_numero"/>
+              <treecell label="rdf:http://www.mozilla.org/SQL-rdf#pe_titre" value="rdf:http://www.mozilla.org/SQL-rdf#pe_numero"/>
+              <treecell label="rdf:http://www.mozilla.org/SQL-rdf#pe_fullname" value="rdf:http://www.mozilla.org/SQL-rdf#pe_numero"/>
+              <treecell label="rdf:http://www.mozilla.org/SQL-rdf#pe_complement" value="rdf:http://www.mozilla.org/SQL-rdf#pe_numero"/>
+            </treerow>
+          </treeitem>
+        </treechildren>
+      </template>
+  </tree>
+
+
+
+</dialog>

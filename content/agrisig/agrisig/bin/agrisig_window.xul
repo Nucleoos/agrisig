@@ -1,0 +1,976 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://browser/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://agrisig/skin/icons.css" type="text/css"?>
+<!-- CE FICHIER A ETE GENERE PAR GENERATEUR_INTERFACE_LIB -->
+
+<window
+	id="Page_agrisig_window"
+	title="AgriSIG"
+	orient="vertical"
+	sizemode="maximized"
+	onload="agrisig_window_Chargement();"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<!-- FICHIERS DE SCRIPTS NECESSAIRES -->
+
+<script src="chrome://agrisig/content/agrisig/lib/pgsql.js"/>
+<script src="chrome://agrisig/content/agrisig/lib/utils_xul.js"/>
+<script src="chrome://agrisig/content/agrisig/lib/pointer.js"/>
+<script src="chrome://agrisig/content/agrisig/lib/generateur_interface_sql.js"/>
+<script src="chrome://agrisig/content/agrisig/lib/generateur_interface_xul.js"/>
+<script src="chrome://global/content/nsDragAndDrop.js"/>
+<script src="chrome://global/content/nsTransferable.js"/>
+<script src="chrome://global/content/globalOverlay.js"/>
+<script src="chrome://browser/content/browser.js"/>
+<script src="agrisig_plus.js"/>
+<script src="chrome://agrisig/content/agrisig/lib/agrisig-mcd.js"/>
+<!-- AJOUTER chrome://agrisig/content/Onglets/Agrisig SI NECESSAIRE -->
+<script src="agrisig_window.js"/>
+<script src="agrisig_window_User.js"/>
+<toolbox>
+  <menubar id="menu-application">
+    <menu id="donnee-menu" label="Gestion des données">
+      <menupopup id="donnee-popup">
+      <menuitem label="Application de profil" oncommand="AllerAOnglet(0)"/>
+      <menuitem label="Profils" oncommand="AllerAOnglet(1)"/>
+      <menuitem label="Famille de profil" oncommand="AllerAOnglet(2)"/>
+      <menuitem label="Articles" oncommand="AllerAOnglet(3)"/>
+      <menuitem label="Conditionnements" oncommand="AllerAOnglet(4)"/>
+      <menuitem label="Produits" oncommand="AllerAOnglet(5)"/>
+      <menuitem label="Couches" oncommand="AllerAOnglet(6)"/>
+      <menuitem label="Type de couche" oncommand="AllerAOnglet(7)"/>
+      <menuitem label="Type de produits" oncommand="AllerAOnglet(8)"/>
+      <menuitem label="Unité" oncommand="AllerAOnglet(9)"/>
+      <menuitem label="Forme" oncommand="AllerAOnglet(10)"/>
+      <menuitem label="Varieté" oncommand="AllerAOnglet(11)"/>
+      <menuitem label="Composition" oncommand="AllerAOnglet(12)"/>
+      <menuitem label="Composants" oncommand="AllerAOnglet(13)"/>
+      <menuitem label="Espèce" oncommand="AllerAOnglet(14)"/>
+      <menuitem label="Classement" oncommand="AllerAOnglet(15)"/>
+      <menuitem label="Materiel" oncommand="AllerAOnglet(16)"/>
+      <menuitem label="Modele" oncommand="AllerAOnglet(17)"/>
+      <menuitem label="Firmes" oncommand="AllerAOnglet(18)"/>
+      <menuitem label="Personnes" oncommand="AllerAOnglet(19)"/>
+      <menuitem label="Communes" oncommand="AllerAOnglet(20)"/>
+      <menuitem label="Codes postaux" oncommand="AllerAOnglet(21)"/>
+      <menuitem label="Achat" oncommand="AllerAOnglet(22)"/>
+      <menuitem label="Documents" oncommand="AllerAOnglet(23)"/>
+      <menuitem label="Type de documents" oncommand="AllerAOnglet(24)"/>
+      <menuitem label="Prélèvements" oncommand="AllerAOnglet(25)"/>
+      <menuitem label="Type de prélèvement" oncommand="AllerAOnglet(26)"/>
+      <menuitem label="Produits de récolte" oncommand="AllerAOnglet(27)"/>
+      <menuitem label="Ventes" oncommand="AllerAOnglet(28)"/>
+      <menuitem label="Stock d'achat" oncommand="AllerAOnglet(29)"/>
+      </menupopup>
+    </menu>
+    <menu id="edition-menu" label="Edition">
+      <menupopup id="edit-popup">
+        <menuitem label="Annuler"/>
+        <menuitem label="Refaire"/>
+      </menupopup>
+    </menu>
+    <menu id="theme-menu" label="Changer de thème">
+      <menupopup id="theme-popup">
+        <menuitem label="Choisir" oncommand="BrowserOpenExtensions('themes')"/>
+      </menupopup>
+    </menu>
+  </menubar>
+</toolbox>
+
+<!-- COMPOSANT OU SE DESSINERONT LES COMPOSANTS -->
+
+<vbox flex="1">
+<tabbox id="Main_Tabbox" flex="1">
+<hbox id="box_overflow" class="tabbrowser-strip chromeclass-toolbar" style="overflow: auto;" >
+<tabs flex="1" class="tabbrowser-tabs" id="Tous_les_onglets" height="36" >
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Application_de_profil" label="Application de profil"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Profils" label="Profils"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Famille_de_profil" label="Famille de profil"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Articles" label="Articles"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Conditionnements" label="Conditionnements"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Produits" label="Produits"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Couches" label="Couches"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Type_de_couche" label="Type de couche"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Type_de_produits" label="Type de produits"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Unité" label="Unité"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Forme" label="Forme"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Varieté" label="Varieté"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Composition" label="Composition"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Composants" label="Composants"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Espèce" label="Espèce"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Classement" label="Classement"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Materiel" label="Materiel"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Modele" label="Modele"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Firmes" label="Firmes"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Personnes" label="Personnes"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Communes" label="Communes"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Codes_postaux" label="Codes postaux"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Achat" label="Achat"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Documents" label="Documents"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Type_de_documents" label="Type de documents"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Prélèvements" label="Prélèvements"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Type_de_prélèvement" label="Type de prélèvement"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Produits_de_récolte" label="Produits de récolte"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Ventes" label="Ventes"/>
+ <tab maxwidth="250" minwidth="60" crop="end" class="tabbrowser-tab" id="Onglet_Stock_d_achat" label="Stock d'achat"/>
+</tabs>
+</hbox>
+<tabpanels id="Tous_les_panels" flex="1">
+<tabpanel flex="1" id="OngletPanel_Application_de_profil" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Application_de_profil_Application__de_profil0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox id="Application_de_profil_Application__de_profil0_Slaves"/>
+<hbox flex="1">
+<vbox id="Application_de_profil_Lot_s__5" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Application_de_profil_Lot_s__5_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Application_de_profil_Lot_s__5" label="Ajouter" oncommand="Insert_Application_de_profil_Lot_s__5()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Application_de_profil_Lot_s__5" label="Supprimer" oncommand="Delete_Application_de_profil_Lot_s__5()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Application_de_profil_Lot_s__5" label="Modifier" oncommand="Update_Application_de_profil_Lot_s__5()" />
+    <button id="Validate_Application_de_profil_Lot_s__5" label="Valider" oncommand="Validate_Application_de_profil_Lot_s__5()"  disabled="true" />
+    <button id="Annuler_Application_de_profil_Lot_s__5" label="Annuler" oncommand="Annuler_Application_de_profil_Lot_s__5()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Application_de_profil_Application__de_profil0" label="Ajouter" oncommand="Insert_Application_de_profil_Application__de_profil0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Application_de_profil_Application__de_profil0" label="Supprimer" oncommand="Delete_Application_de_profil_Application__de_profil0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Application_de_profil_Application__de_profil0" label="Modifier" oncommand="Update_Application_de_profil_Application__de_profil0()" />
+    <button id="Validate_Application_de_profil_Application__de_profil0" label="Valider" oncommand="Validate_Application_de_profil_Application__de_profil0()"  disabled="true" />
+    <button id="Annuler_Application_de_profil_Application__de_profil0" label="Annuler" oncommand="Annuler_Application_de_profil_Application__de_profil0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Profils" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Profils_Profils_existants0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox id="Profils_Profils_existants0_Slaves"/>
+<tabbox id="tabbox_Profils_Profils_existants0" flex="1">
+<tabs >
+<tab label="Familles du profil"/>
+<tab label="Articles présents dans le profil"/>
+<tab label="Type de couche"/>
+</tabs>
+<tabpanels flex="1">
+<tabpanel flex="1">
+<hbox flex="1">
+<vbox id="ListeDessus_Profils_Familles_du_profil_6" flex="1"/>
+<splitter><grippy/></splitter>
+<vbox id="Profils_Familles_du_profil_6" flex="1"/>
+</hbox>
+</tabpanel>
+<tabpanel flex="1">
+<hbox flex="1">
+<vbox id="Profils_Articles_présents_dans_le_profil_7" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Profils_Articles_présents_dans_le_profil_7_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Profils_Articles_présents_dans_le_profil_7" label="Ajouter" oncommand="Insert_Profils_Articles_présents_dans_le_profil_7()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Profils_Articles_présents_dans_le_profil_7" label="Supprimer" oncommand="Delete_Profils_Articles_présents_dans_le_profil_7()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Profils_Articles_présents_dans_le_profil_7" label="Modifier" oncommand="Update_Profils_Articles_présents_dans_le_profil_7()" />
+    <button id="Validate_Profils_Articles_présents_dans_le_profil_7" label="Valider" oncommand="Validate_Profils_Articles_présents_dans_le_profil_7()"  disabled="true" />
+    <button id="Annuler_Profils_Articles_présents_dans_le_profil_7" label="Annuler" oncommand="Annuler_Profils_Articles_présents_dans_le_profil_7()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</tabpanel>
+<tabpanel flex="1">
+<hbox flex="1">
+<vbox id="ListeDessus_Profils_Type_de_couche_11" flex="1"/>
+<splitter><grippy/></splitter>
+<vbox id="Profils_Type_de_couche_11" flex="1"/>
+</hbox>
+</tabpanel>
+</tabpanels>
+</tabbox>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Profils_Profils_existants0" label="Ajouter" oncommand="Insert_Profils_Profils_existants0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Profils_Profils_existants0" label="Supprimer" oncommand="Delete_Profils_Profils_existants0()" hidden='true'/>
+    <button class="icon_Modifier" disabled="true" id="Update_Profils_Profils_existants0" label="Modifier" oncommand="Update_Profils_Profils_existants0()" />
+    <button id="Validate_Profils_Profils_existants0" label="Valider" oncommand="Validate_Profils_Profils_existants0()"  disabled="true" />
+    <button id="Annuler_Profils_Profils_existants0" label="Annuler" oncommand="Annuler_Profils_Profils_existants0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Profils()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Famille_de_profil" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Famille_de_profil_Famille_de_profil0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Famille_de_profil_Famille_de_profil0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Famille_de_profil_Famille_de_profil0" label="Ajouter" oncommand="Insert_Famille_de_profil_Famille_de_profil0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Famille_de_profil_Famille_de_profil0" label="Supprimer" oncommand="Delete_Famille_de_profil_Famille_de_profil0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Famille_de_profil_Famille_de_profil0" label="Modifier" oncommand="Update_Famille_de_profil_Famille_de_profil0()" />
+    <button id="Validate_Famille_de_profil_Famille_de_profil0" label="Valider" oncommand="Validate_Famille_de_profil_Famille_de_profil0()"  disabled="true" />
+    <button id="Annuler_Famille_de_profil_Famille_de_profil0" label="Annuler" oncommand="Annuler_Famille_de_profil_Famille_de_profil0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Famille_de_profil()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Articles" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Articles_Articles0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox id="Articles_Articles0_Slaves"/>
+<hbox flex="1">
+<vbox id="Articles_Vendeur_4" flex="1"/>
+</hbox>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Articles_Articles0" label="Ajouter" oncommand="Insert_Articles_Articles0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Articles_Articles0" label="Supprimer" oncommand="Delete_Articles_Articles0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Articles_Articles0" label="Modifier" oncommand="Update_Articles_Articles0()" />
+    <button id="Validate_Articles_Articles0" label="Valider" oncommand="Validate_Articles_Articles0()"  disabled="true" />
+    <button id="Annuler_Articles_Articles0" label="Annuler" oncommand="Annuler_Articles_Articles0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Articles()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Conditionnements" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Conditionnements_Conditionnements0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Conditionnements_Conditionnements0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Conditionnements_Conditionnements0" label="Ajouter" oncommand="Insert_Conditionnements_Conditionnements0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Conditionnements_Conditionnements0" label="Supprimer" oncommand="Delete_Conditionnements_Conditionnements0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Conditionnements_Conditionnements0" label="Modifier" oncommand="Update_Conditionnements_Conditionnements0()" />
+    <button id="Validate_Conditionnements_Conditionnements0" label="Valider" oncommand="Validate_Conditionnements_Conditionnements0()"  disabled="true" />
+    <button id="Annuler_Conditionnements_Conditionnements0" label="Annuler" oncommand="Annuler_Conditionnements_Conditionnements0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Conditionnements()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Produits" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Produits_Produits0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox id="Produits_Produits0_Slaves"/>
+<hbox flex="1">
+<vbox id="ListeDessus_Produits_Classements_du_produit_12" flex="1"/>
+<splitter><grippy/></splitter>
+<vbox id="Produits_Classements_du_produit_12" flex="1"/>
+</hbox>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Produits_Produits0" label="Ajouter" oncommand="Insert_Produits_Produits0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Produits_Produits0" label="Supprimer" oncommand="Delete_Produits_Produits0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Produits_Produits0" label="Modifier" oncommand="Update_Produits_Produits0()" />
+    <button id="Validate_Produits_Produits0" label="Valider" oncommand="Validate_Produits_Produits0()"  disabled="true" />
+    <button id="Annuler_Produits_Produits0" label="Annuler" oncommand="Annuler_Produits_Produits0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Produits()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Couches" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Couches_Couches0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Couches_Couches0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Couches_Couches0" label="Ajouter" oncommand="Insert_Couches_Couches0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Couches_Couches0" label="Supprimer" oncommand="Delete_Couches_Couches0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Couches_Couches0" label="Modifier" oncommand="Update_Couches_Couches0()" />
+    <button id="Validate_Couches_Couches0" label="Valider" oncommand="Validate_Couches_Couches0()"  disabled="true" />
+    <button id="Annuler_Couches_Couches0" label="Annuler" oncommand="Annuler_Couches_Couches0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Type_de_couche" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Type_de_couche_Type_de_couches0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Type_de_couche_Type_de_couches0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Type_de_couche_Type_de_couches0" label="Ajouter" oncommand="Insert_Type_de_couche_Type_de_couches0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Type_de_couche_Type_de_couches0" label="Supprimer" oncommand="Delete_Type_de_couche_Type_de_couches0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Type_de_couche_Type_de_couches0" label="Modifier" oncommand="Update_Type_de_couche_Type_de_couches0()" />
+    <button id="Validate_Type_de_couche_Type_de_couches0" label="Valider" oncommand="Validate_Type_de_couche_Type_de_couches0()"  disabled="true" />
+    <button id="Annuler_Type_de_couche_Type_de_couches0" label="Annuler" oncommand="Annuler_Type_de_couche_Type_de_couches0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Type_de_couche()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Type_de_produits" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Type_de_produits_Type_de_produits0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Type_de_produits_Type_de_produits0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Type_de_produits_Type_de_produits0" label="Ajouter" oncommand="Insert_Type_de_produits_Type_de_produits0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Type_de_produits_Type_de_produits0" label="Supprimer" oncommand="Delete_Type_de_produits_Type_de_produits0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Type_de_produits_Type_de_produits0" label="Modifier" oncommand="Update_Type_de_produits_Type_de_produits0()" />
+    <button id="Validate_Type_de_produits_Type_de_produits0" label="Valider" oncommand="Validate_Type_de_produits_Type_de_produits0()"  disabled="true" />
+    <button id="Annuler_Type_de_produits_Type_de_produits0" label="Annuler" oncommand="Annuler_Type_de_produits_Type_de_produits0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Type_de_produits()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Unité" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Unité_Unités0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Unité_Unités0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Unité_Unités0" label="Ajouter" oncommand="Insert_Unité_Unités0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Unité_Unités0" label="Supprimer" oncommand="Delete_Unité_Unités0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Unité_Unités0" label="Modifier" oncommand="Update_Unité_Unités0()" />
+    <button id="Validate_Unité_Unités0" label="Valider" oncommand="Validate_Unité_Unités0()"  disabled="true" />
+    <button id="Annuler_Unité_Unités0" label="Annuler" oncommand="Annuler_Unité_Unités0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Unité()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Forme" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Forme_Formes0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Forme_Formes0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Forme_Formes0" label="Ajouter" oncommand="Insert_Forme_Formes0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Forme_Formes0" label="Supprimer" oncommand="Delete_Forme_Formes0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Forme_Formes0" label="Modifier" oncommand="Update_Forme_Formes0()" />
+    <button id="Validate_Forme_Formes0" label="Valider" oncommand="Validate_Forme_Formes0()"  disabled="true" />
+    <button id="Annuler_Forme_Formes0" label="Annuler" oncommand="Annuler_Forme_Formes0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Forme()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Varieté" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Varieté_Varietés0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Varieté_Varietés0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Varieté_Varietés0" label="Ajouter" oncommand="Insert_Varieté_Varietés0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Varieté_Varietés0" label="Supprimer" oncommand="Delete_Varieté_Varietés0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Varieté_Varietés0" label="Modifier" oncommand="Update_Varieté_Varietés0()" />
+    <button id="Validate_Varieté_Varietés0" label="Valider" oncommand="Validate_Varieté_Varietés0()"  disabled="true" />
+    <button id="Annuler_Varieté_Varietés0" label="Annuler" oncommand="Annuler_Varieté_Varietés0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Varieté()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Composition" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Composition_Compositions0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox id="Composition_Compositions0_Slaves"/>
+<hbox flex="1">
+<vbox id="Composition_Composants_3" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Composition_Composants_3_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Composition_Composants_3" label="Ajouter" oncommand="Insert_Composition_Composants_3()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Composition_Composants_3" label="Supprimer" oncommand="Delete_Composition_Composants_3()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Composition_Composants_3" label="Modifier" oncommand="Update_Composition_Composants_3()" />
+    <button id="Validate_Composition_Composants_3" label="Valider" oncommand="Validate_Composition_Composants_3()"  disabled="true" />
+    <button id="Annuler_Composition_Composants_3" label="Annuler" oncommand="Annuler_Composition_Composants_3()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Composition_Compositions0" label="Ajouter" oncommand="Insert_Composition_Compositions0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Composition_Compositions0" label="Supprimer" oncommand="Delete_Composition_Compositions0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Composition_Compositions0" label="Modifier" oncommand="Update_Composition_Compositions0()" />
+    <button id="Validate_Composition_Compositions0" label="Valider" oncommand="Validate_Composition_Compositions0()"  disabled="true" />
+    <button id="Annuler_Composition_Compositions0" label="Annuler" oncommand="Annuler_Composition_Compositions0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Composition()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Composants" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Composants_Composants0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox id="Composants_Composants0_Slaves"/>
+<hbox flex="1">
+<vbox id="Composants_Date_Avant_Récolte_5" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Composants_Date_Avant_Récolte_5_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Composants_Date_Avant_Récolte_5" label="Ajouter" oncommand="Insert_Composants_Date_Avant_Récolte_5()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Composants_Date_Avant_Récolte_5" label="Supprimer" oncommand="Delete_Composants_Date_Avant_Récolte_5()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Composants_Date_Avant_Récolte_5" label="Modifier" oncommand="Update_Composants_Date_Avant_Récolte_5()" />
+    <button id="Validate_Composants_Date_Avant_Récolte_5" label="Valider" oncommand="Validate_Composants_Date_Avant_Récolte_5()"  disabled="true" />
+    <button id="Annuler_Composants_Date_Avant_Récolte_5" label="Annuler" oncommand="Annuler_Composants_Date_Avant_Récolte_5()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Composants_Composants0" label="Ajouter" oncommand="Insert_Composants_Composants0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Composants_Composants0" label="Supprimer" oncommand="Delete_Composants_Composants0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Composants_Composants0" label="Modifier" oncommand="Update_Composants_Composants0()" />
+    <button id="Validate_Composants_Composants0" label="Valider" oncommand="Validate_Composants_Composants0()"  disabled="true" />
+    <button id="Annuler_Composants_Composants0" label="Annuler" oncommand="Annuler_Composants_Composants0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Composants()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Espèce" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Espèce_Espèces0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Espèce_Espèces0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Espèce_Espèces0" label="Ajouter" oncommand="Insert_Espèce_Espèces0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Espèce_Espèces0" label="Supprimer" oncommand="Delete_Espèce_Espèces0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Espèce_Espèces0" label="Modifier" oncommand="Update_Espèce_Espèces0()" />
+    <button id="Validate_Espèce_Espèces0" label="Valider" oncommand="Validate_Espèce_Espèces0()"  disabled="true" />
+    <button id="Annuler_Espèce_Espèces0" label="Annuler" oncommand="Annuler_Espèce_Espèces0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Espèce()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Classement" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Classement_Classements0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Classement_Classements0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Classement_Classements0" label="Ajouter" oncommand="Insert_Classement_Classements0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Classement_Classements0" label="Supprimer" oncommand="Delete_Classement_Classements0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Classement_Classements0" label="Modifier" oncommand="Update_Classement_Classements0()" />
+    <button id="Validate_Classement_Classements0" label="Valider" oncommand="Validate_Classement_Classements0()"  disabled="true" />
+    <button id="Annuler_Classement_Classements0" label="Annuler" oncommand="Annuler_Classement_Classements0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Classement()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Materiel" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Materiel_Materiels0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Materiel_Materiels0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Materiel_Materiels0" label="Ajouter" oncommand="Insert_Materiel_Materiels0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Materiel_Materiels0" label="Supprimer" oncommand="Delete_Materiel_Materiels0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Materiel_Materiels0" label="Modifier" oncommand="Update_Materiel_Materiels0()" />
+    <button id="Validate_Materiel_Materiels0" label="Valider" oncommand="Validate_Materiel_Materiels0()"  disabled="true" />
+    <button id="Annuler_Materiel_Materiels0" label="Annuler" oncommand="Annuler_Materiel_Materiels0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Modele" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Modele_Modeles0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Modele_Modeles0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Modele_Modeles0" label="Ajouter" oncommand="Insert_Modele_Modeles0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Modele_Modeles0" label="Supprimer" oncommand="Delete_Modele_Modeles0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Modele_Modeles0" label="Modifier" oncommand="Update_Modele_Modeles0()" />
+    <button id="Validate_Modele_Modeles0" label="Valider" oncommand="Validate_Modele_Modeles0()"  disabled="true" />
+    <button id="Annuler_Modele_Modeles0" label="Annuler" oncommand="Annuler_Modele_Modeles0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Modele()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Firmes" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Firmes_Firmes0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Firmes_Firmes0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Firmes_Firmes0" label="Ajouter" oncommand="Insert_Firmes_Firmes0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Firmes_Firmes0" label="Supprimer" oncommand="Delete_Firmes_Firmes0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Firmes_Firmes0" label="Modifier" oncommand="Update_Firmes_Firmes0()" />
+    <button id="Validate_Firmes_Firmes0" label="Valider" oncommand="Validate_Firmes_Firmes0()"  disabled="true" />
+    <button id="Annuler_Firmes_Firmes0" label="Annuler" oncommand="Annuler_Firmes_Firmes0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Firmes()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Personnes" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Personnes_Personnes_existants0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox id="Personnes_Personnes_existants0_Slaves"/>
+<tabbox id="tabbox_Personnes_Personnes_existants0" flex="1">
+<tabs >
+<tab label="Adresse"/>
+<tab label="Contact"/>
+</tabs>
+<tabpanels flex="1">
+<tabpanel flex="1">
+<hbox flex="1">
+<vbox id="Personnes_Adresse_5" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Personnes_Adresse_5_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Personnes_Adresse_5" label="Ajouter" oncommand="Insert_Personnes_Adresse_5()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Personnes_Adresse_5" label="Supprimer" oncommand="Delete_Personnes_Adresse_5()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Personnes_Adresse_5" label="Modifier" oncommand="Update_Personnes_Adresse_5()" />
+    <button id="Validate_Personnes_Adresse_5" label="Valider" oncommand="Validate_Personnes_Adresse_5()"  disabled="true" />
+    <button id="Annuler_Personnes_Adresse_5" label="Annuler" oncommand="Annuler_Personnes_Adresse_5()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</tabpanel>
+<tabpanel flex="1">
+<hbox flex="1">
+<vbox id="Personnes_Contact_11" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Personnes_Contact_11_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Personnes_Contact_11" label="Ajouter" oncommand="Insert_Personnes_Contact_11()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Personnes_Contact_11" label="Supprimer" oncommand="Delete_Personnes_Contact_11()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Personnes_Contact_11" label="Modifier" oncommand="Update_Personnes_Contact_11()" />
+    <button id="Validate_Personnes_Contact_11" label="Valider" oncommand="Validate_Personnes_Contact_11()"  disabled="true" />
+    <button id="Annuler_Personnes_Contact_11" label="Annuler" oncommand="Annuler_Personnes_Contact_11()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</tabpanel>
+</tabpanels>
+</tabbox>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Personnes_Personnes_existants0" label="Ajouter" oncommand="Insert_Personnes_Personnes_existants0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Personnes_Personnes_existants0" label="Supprimer" oncommand="Delete_Personnes_Personnes_existants0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Personnes_Personnes_existants0" label="Modifier" oncommand="Update_Personnes_Personnes_existants0()" />
+    <button id="Validate_Personnes_Personnes_existants0" label="Valider" oncommand="Validate_Personnes_Personnes_existants0()"  disabled="true" />
+    <button id="Annuler_Personnes_Personnes_existants0" label="Annuler" oncommand="Annuler_Personnes_Personnes_existants0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Personnes()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Communes" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Communes_Communes0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Communes_Communes0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Communes_Communes0" label="Ajouter" oncommand="Insert_Communes_Communes0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Communes_Communes0" label="Supprimer" oncommand="Delete_Communes_Communes0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Communes_Communes0" label="Modifier" oncommand="Update_Communes_Communes0()" />
+    <button id="Validate_Communes_Communes0" label="Valider" oncommand="Validate_Communes_Communes0()"  disabled="true" />
+    <button id="Annuler_Communes_Communes0" label="Annuler" oncommand="Annuler_Communes_Communes0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Communes()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Codes_postaux" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Codes_postaux_Codes_postaux0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox id="Codes_postaux_Codes_postaux0_Slaves"/>
+<hbox flex="1">
+<vbox id="ListeDessus_Codes_postaux_Communes_4" flex="1"/>
+<splitter><grippy/></splitter>
+<vbox id="Codes_postaux_Communes_4" flex="1"/>
+</hbox>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Codes_postaux_Codes_postaux0" label="Ajouter" oncommand="Insert_Codes_postaux_Codes_postaux0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Codes_postaux_Codes_postaux0" label="Supprimer" oncommand="Delete_Codes_postaux_Codes_postaux0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Codes_postaux_Codes_postaux0" label="Modifier" oncommand="Update_Codes_postaux_Codes_postaux0()" />
+    <button id="Validate_Codes_postaux_Codes_postaux0" label="Valider" oncommand="Validate_Codes_postaux_Codes_postaux0()"  disabled="true" />
+    <button id="Annuler_Codes_postaux_Codes_postaux0" label="Annuler" oncommand="Annuler_Codes_postaux_Codes_postaux0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Codes_postaux()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Achat" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Achat_Achat0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Achat_Achat0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Achat_Achat0" label="Ajouter" oncommand="Insert_Achat_Achat0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Achat_Achat0" label="Supprimer" oncommand="Delete_Achat_Achat0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Achat_Achat0" label="Modifier" oncommand="Update_Achat_Achat0()" />
+    <button id="Validate_Achat_Achat0" label="Valider" oncommand="Validate_Achat_Achat0()"  disabled="true" />
+    <button id="Annuler_Achat_Achat0" label="Annuler" oncommand="Annuler_Achat_Achat0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Documents" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Documents_Documents0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Documents_Documents0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Documents_Documents0" label="Ajouter" oncommand="Insert_Documents_Documents0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Documents_Documents0" label="Supprimer" oncommand="Delete_Documents_Documents0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Documents_Documents0" label="Modifier" oncommand="Update_Documents_Documents0()" />
+    <button id="Validate_Documents_Documents0" label="Valider" oncommand="Validate_Documents_Documents0()"  disabled="true" />
+    <button id="Annuler_Documents_Documents0" label="Annuler" oncommand="Annuler_Documents_Documents0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Type_de_documents" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Type_de_documents_Type_de_documents0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Type_de_documents_Type_de_documents0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Type_de_documents_Type_de_documents0" label="Ajouter" oncommand="Insert_Type_de_documents_Type_de_documents0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Type_de_documents_Type_de_documents0" label="Supprimer" oncommand="Delete_Type_de_documents_Type_de_documents0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Type_de_documents_Type_de_documents0" label="Modifier" oncommand="Update_Type_de_documents_Type_de_documents0()" />
+    <button id="Validate_Type_de_documents_Type_de_documents0" label="Valider" oncommand="Validate_Type_de_documents_Type_de_documents0()"  disabled="true" />
+    <button id="Annuler_Type_de_documents_Type_de_documents0" label="Annuler" oncommand="Annuler_Type_de_documents_Type_de_documents0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Type_de_documents()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Prélèvements" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Prélèvements_Prélèvements0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Prélèvements_Prélèvements0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Prélèvements_Prélèvements0" label="Ajouter" oncommand="Insert_Prélèvements_Prélèvements0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Prélèvements_Prélèvements0" label="Supprimer" oncommand="Delete_Prélèvements_Prélèvements0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Prélèvements_Prélèvements0" label="Modifier" oncommand="Update_Prélèvements_Prélèvements0()" />
+    <button id="Validate_Prélèvements_Prélèvements0" label="Valider" oncommand="Validate_Prélèvements_Prélèvements0()"  disabled="true" />
+    <button id="Annuler_Prélèvements_Prélèvements0" label="Annuler" oncommand="Annuler_Prélèvements_Prélèvements0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Type_de_prélèvement" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Type_de_prélèvement_Type_de_prélèvement0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Type_de_prélèvement_Type_de_prélèvement0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Type_de_prélèvement_Type_de_prélèvement0" label="Ajouter" oncommand="Insert_Type_de_prélèvement_Type_de_prélèvement0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Type_de_prélèvement_Type_de_prélèvement0" label="Supprimer" oncommand="Delete_Type_de_prélèvement_Type_de_prélèvement0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Type_de_prélèvement_Type_de_prélèvement0" label="Modifier" oncommand="Update_Type_de_prélèvement_Type_de_prélèvement0()" />
+    <button id="Validate_Type_de_prélèvement_Type_de_prélèvement0" label="Valider" oncommand="Validate_Type_de_prélèvement_Type_de_prélèvement0()"  disabled="true" />
+    <button id="Annuler_Type_de_prélèvement_Type_de_prélèvement0" label="Annuler" oncommand="Annuler_Type_de_prélèvement_Type_de_prélèvement0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+<hbox class="fondstyle" pack="end">
+  <hbox pack="end" align="center">
+    <separator class="groove"/>
+    <button minwidth="150" label="Retour" oncommand="Retour_Type_de_prélèvement()"/>
+  </hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Produits_de_récolte" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Produits_de_récolte_Produits_de_récolte0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Produits_de_récolte_Produits_de_récolte0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Produits_de_récolte_Produits_de_récolte0" label="Ajouter" oncommand="Insert_Produits_de_récolte_Produits_de_récolte0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Produits_de_récolte_Produits_de_récolte0" label="Supprimer" oncommand="Delete_Produits_de_récolte_Produits_de_récolte0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Produits_de_récolte_Produits_de_récolte0" label="Modifier" oncommand="Update_Produits_de_récolte_Produits_de_récolte0()" />
+    <button id="Validate_Produits_de_récolte_Produits_de_récolte0" label="Valider" oncommand="Validate_Produits_de_récolte_Produits_de_récolte0()"  disabled="true" />
+    <button id="Annuler_Produits_de_récolte_Produits_de_récolte0" label="Annuler" oncommand="Annuler_Produits_de_récolte_Produits_de_récolte0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Ventes" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Ventes_Ventes0" flex="1"/>
+<splitter collapse="before"> <grippy/> </splitter>
+<vbox flex="1" style="overflow:auto">
+<vbox flex="1" id="Ventes_Ventes0_Slaves"/>
+<hbox  pack="end" align="stretch" class="fondstyle">
+    <button class="icon_Ajouter" disabled="true" id="Insert_Ventes_Ventes0" label="Ajouter" oncommand="Insert_Ventes_Ventes0()" />
+    <button class="icon_Supprimer" disabled="true" id="Delete_Ventes_Ventes0" label="Supprimer" oncommand="Delete_Ventes_Ventes0()" />
+    <button class="icon_Modifier" disabled="true" id="Update_Ventes_Ventes0" label="Modifier" oncommand="Update_Ventes_Ventes0()" />
+    <button id="Validate_Ventes_Ventes0" label="Valider" oncommand="Validate_Ventes_Ventes0()"  disabled="true" />
+    <button id="Annuler_Ventes_Ventes0" label="Annuler" oncommand="Annuler_Ventes_Ventes0()"  disabled="true" />
+</hbox>
+</vbox>
+</hbox>
+</hbox>
+</vbox>
+</tabpanel>
+<tabpanel flex="1" id="OngletPanel_Stock_d_achat" >
+<vbox flex="1">
+<hbox flex="1">
+<hbox flex="1">
+<vbox id="Stock_d_achat_Stock_d_achat0" flex="1"/>
+</hbox>
+</hbox>
+</vbox>
+</tabpanel>
+</tabpanels>
+</tabbox>
+</vbox>
+<statusbar id="statusbar">
+	<statusbarpanel id="status_Info" label=""/>
+	<statusbarpanel id="status_TpsExec" flex="1" label=""/>
+</statusbar>
+</window>

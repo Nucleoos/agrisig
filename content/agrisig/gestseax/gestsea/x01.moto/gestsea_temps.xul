@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="gestsea_temps.css" type="text/css"?>
+
+<window	id="gestsea-temps" 
+        title="GestSEA Temps - Just'à Temps!" 
+        onload="" orient="horizontal" sizemode="normal" 
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <vbox flex="1">
+    <hbox align="center">
+      <label value="Date :"/>
+      <textbox id="current-date" flex="1"/>
+    </hbox>
+    <box flex="1">
+
+      <tree id="tab-ilot-sousilot-tree" flex="1" seltype="single" datasources="rdf:null" ref="SQL:ResultRoot" flags="dont-build-content" onclick="tree_select_sousilot();">
+        <treecols>
+          <treecol label="Nom" flex="1" sort="rdf:http://www.mozilla.org/SQL-rdf#si_nom" sortActive="true"/>
+          <splitter class="tree-splitter"/>
+          <treecol label="Surface (Ha)" sort="rdf:http://www.mozilla.org/SQL-rdf#si_surface"/>
+        </treecols>
+        <template>
+          <treechildren>
+            <treeitem uri="rdf:*">
+              <treerow>
+                <treecell label="rdf:http://www.mozilla.org/SQL-rdf#si_nom" value="rdf:http://www.mozilla.org/SQL-rdf#si_numero"/>
+                <treecell label="rdf:http://www.mozilla.org/SQL-rdf#si_surface" tooltiptext="rdf:http://www.mozilla.org/SQL-rdf#si_aire m²"/>
+              </treerow>
+            </treeitem>
+          </treechildren>
+        </template>
+      </tree>
+
+    </box>
+  </vbox>
+  <splitter collapse="before"/>
+  <vbox flex="4">
+
+    <hbox align="center">
+      <label value="J'ai"/>
+      <menulist editable="true" id="tache-menulist" onchange="cot_select_personnes(); cot_charge_personne();" flex="2" seltype="single" datasources="rdf:null" ref="SQL:ResultRoot" flags="dont-build-content">
+        <template>
+          <menupopup>
+            <menuitem uri="rdf:*" label="rdf:http://www.mozilla.org/SQL-rdf#zt_phrase" value="rdf:http://www.mozilla.org/SQL-rdf#zt_numero"/>
+          </menupopup>
+        </template>
+      </menulist>      
+    </hbox>
+
+    <hbox align="center">
+      <label value="sur le thème"/>
+      <menulist editable="true" id="tache-menulist" onchange="cot_select_personnes(); cot_charge_personne();" flex="1" seltype="single" datasources="rdf:null" ref="SQL:ResultRoot" flags="dont-build-content">
+        <template>
+          <menupopup>
+            <menuitem uri="rdf:*" label="rdf:http://www.mozilla.org/SQL-rdf#zt_phrase" value="rdf:http://www.mozilla.org/SQL-rdf#zt_numero"/>
+          </menupopup>
+        </template>
+      </menulist>      
+      <label value="au sujet de"/>
+      <menulist editable="true" id="tache-menulist" onchange="cot_select_personnes(); cot_charge_personne();" flex="5" seltype="single" datasources="rdf:null" ref="SQL:ResultRoot" flags="dont-build-content">
+        <template>
+          <menupopup>
+            <menuitem uri="rdf:*" label="rdf:http://www.mozilla.org/SQL-rdf#zt_phrase" value="rdf:http://www.mozilla.org/SQL-rdf#zt_numero"/>
+          </menupopup>
+        </template>
+      </menulist>
+    </hbox>
+
+    <hbox align="center">
+      <label value="Où ?"/>
+      <menulist editable="true" id="tache-menulist" onchange="cot_select_personnes(); cot_charge_personne();" flex="2" seltype="single" datasources="rdf:null" ref="SQL:ResultRoot" flags="dont-build-content">
+        <template>
+          <menupopup>
+            <menuitem uri="rdf:*" label="rdf:http://www.mozilla.org/SQL-rdf#zt_phrase" value="rdf:http://www.mozilla.org/SQL-rdf#zt_numero"/>
+          </menupopup>
+        </template>
+      </menulist>      
+    </hbox>
+
+    <hbox align="center">
+      <label value="Pour ?"/>
+      <radiogroup orient="horizontal">
+        <radio label="une facture" selected="true"/>
+	<radio label="un devis"/>
+	<radio label="un adhérent"/>
+	<radio label="un groupe"/>
+      </radiogroup>
+      
+      <textbox value="" flex="1"/>
+      <menulist editable="true" id="tache-menulist" onchange="cot_select_personnes(); cot_charge_personne();" flex="2" seltype="single" datasources="rdf:null" ref="SQL:ResultRoot" flags="dont-build-content">
+        <template>
+          <menupopup>
+            <menuitem uri="rdf:*" label="rdf:http://www.mozilla.org/SQL-rdf#zt_phrase" value="rdf:http://www.mozilla.org/SQL-rdf#zt_numero"/>
+          </menupopup>
+        </template>
+      </menulist> 
+    </hbox>     
+
+    <hbox align="center">
+      <label value="De (HH:MM)"/>
+      <textbox value="" flex="1"/>
+      <label value="à (HH:MM)"/>
+      <textbox value="" flex="1"/>
+    </hbox>
+
+    <hbox align="center">
+      <label value="soit un total de"/>
+      <textbox value="" flex="1"/>
+      <label value="minutes"/>
+    </hbox>
+
+    <hbox flex="1"/>
+
+    <hbox pack="end" align="end" style="background-color: #FFFFDD;">
+      <button class="mybutton" label="Nouvelle activité"/>
+      <button class="mybutton" label="Modifier l'activité"/>
+      <button class="mybutton" label="Supprimer l'activité"/>
+      <button class="mybutton" label="Enregistrer"/>
+      <button class="mybutton" label="Annuler"/>
+    </hbox>
+
+
+
+  </vbox>
+</window>

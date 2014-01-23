@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<window id="gestsea-print" title="Saisie des règlements" onload="reglement_onload();" orient="vertical" sizemode="normal" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:svg="http://www.w3.org/2000/svg" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script encoding="UTF-8" src="gestsea_reglement.js"/>
+<!--  <script src="gestsea_xul.js"/>-->
+<!--  <script src="../generateur/utils_xul.js"/>-->
+  <vbox>
+    <stack flex="1" >
+      <image flex="1" height="58" width="496" src="banniere.jpg"/>
+      <description top="10" left="20" class="header">Réglements</description>
+      <description top="25" left="20" class="indent">Saisissez des règlements...</description>
+      <hbox pack="end" style="padding: 3px;">
+        <image src="gestsea.png"/>
+      </hbox>
+    </stack>
+    <separator flex="1" class="groove-thin"/>  
+  </vbox>
+  <hbox flex="1" style="padding:10px;" height="249">
+    <deck flex="1">
+      <vbox>
+        <hbox>
+          <label value="Facture n°"/>
+          <label id="numfact"/>
+        </hbox>
+        <description maxwidth="470">Vous pouvez saisir ici toutes les données concernant le réglement effectué pour la facture :</description>
+        <hbox align="center">
+          <label value="Date du réglement" control="datereglement"/>
+          <textbox flex="1" id="datereglement" value=""/>
+	</hbox>
+        <hbox align="center">
+          <label value="Libellé de la banque" control="libellebanque"/>
+          <textbox flex="1" id="libellebanque" value=""/>
+	</hbox>
+        <hbox align="center">
+          <label value="N°Compte" control="numerocompte"/>
+          <textbox flex="1" id="numerocompte" value=""/>
+	</hbox>
+        <hbox align="center">
+          <label value="Mode de réglement : " control="modereglement"/>
+	  <radiogroup id="modereglement" orient="horizontal">
+            <radio label="Chèque"   value="1" selected="true"/>
+            <radio label="Virement" value="2"/>
+            <radio label="Espèce"   value="3"/>
+	  </radiogroup>
+	</hbox>
+        <hbox align="center">
+          <label value="Vers la banque : " control="banque"/>
+	  <radiogroup id="banque" orient="horizontal">
+            <radio label="Crédit Agricole" value="1"  selected="true"/>
+            <radio label="C.C.P."          value="2"/>
+	  </radiogroup>
+	</hbox>
+        <hbox align="center">
+          <label value="Référence du chèque" control="reference"/>
+          <textbox flex="1" id="reference" value=""/>
+	</hbox>
+      </vbox>
+    </deck>
+  </hbox>
+  <vbox height="51">
+    <separator class="groove"/>  
+    <hbox flex="1" align="center" pack="end">
+      <button label="Enregistrer le réglement" oncommand="enregistre();"/>
+      <button label="Pas de règlement" oncommand="annule();"/>
+      <box width="5"/>
+    </hbox>
+  </vbox>
+  
+</window>

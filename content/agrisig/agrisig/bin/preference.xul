@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="ISO-8859-1"?> 
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?> 
+<?xml-stylesheet href="chrome://mozapps/skin/pref/pref.css"?>
+<?xml-stylesheet href="chrome://browser/skin/pref/pref.css"?>
+
+<!DOCTYPE window SYSTEM "chrome://browser/locale/pref/pref.dtd" >
+
+<dialog id="agrisig-pref" 
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        title="Préférences" windowtype="Browser:Options"
+        style="width: 58.3em; height: 41em;"
+        onload="pref_load()"
+        chromehidden="menubar toolbar location directories status extrachrome"
+        buttons="accept,cancel,extra1"
+	buttonlabelextra1="Défaut"
+	ondialogaccept="pref_sauvegarde()"
+	ondialogextra1="pref_defaut()">
+
+  <script src="preference.js"/>
+
+  <hbox flex="1">
+    <vbox id="prefsCategories" class="listBox buttonBox" oncommand="pref_switchPage(event.target.id);" orient="vertical" onmouseover="focus();">
+      <button id="catMap" indice="0" orient="vertical" class="buttonBoxButton" type="radio" group="categories" label="Carte"/>
+      <button id="catAdvancedButton"  indice="1" orient="vertical" class="buttonBoxButton" type="radio" group="categories" label="Avancé"/>
+    </vbox>
+    <vbox flex="1">
+      <dialogheader id="header"/>
+      <deck id="pref-deck" flex="1">
+        <vbox id="catMap" flex="1" style="overflow:auto;">
+          <hbox>
+            <groupbox flex="1">
+	      <caption>
+                <label control="Déplacement_continu_lbl" value="Déplacement continu"/>
+	      </caption>
+	      <hbox>
+                <checkbox id="Déplacement_continu" label="Activer le déplacement en continu" flex="1" maxlength="16"/>
+              </hbox>
+              <label control="Déplacement_continu_descr" value = "Il est recommandé de désactiver cette option sur les machines lentes"/>
+            </groupbox>
+          </hbox>
+	  <hbox>
+            <groupbox flex="1">
+	      <caption>
+                <label control="Centrage_textes_lbl" value="Centrage des textes"/>
+	      </caption>
+	      <hbox>
+                <checkbox id="Centrage_textes" label="Activer le centrage des textes" flex="1" maxlength="16"/>
+              </hbox>
+              <label control="Centrages_textes_descr" value = "Sur certains moteurs de rendu SVG le centrage des textes s'effectue mal ; si vous constatez que le texte est mal affiché, désactivez cette option"/>
+            </groupbox>
+          </hbox>
+        </vbox>
+        <vbox id="catAdvancedVbox"  flex="1" style="overflow:auto;">
+          <hbox>
+	    <groupbox flex="1">
+	      <caption>
+                <label control="Epsilon_lbl" value="Epsilon"/>
+	      </caption>
+	      <hbox>
+                <textbox id="Epsilon" flex="1" maxlength="16"/>
+              </hbox>
+              <label control="Epsilon_descr" value = "Tolérance maximale en m en-dessous de laquelle on considère que 2 longueurs sont égales"/>
+            </groupbox>
+          </hbox>
+          <hbox>
+	    <groupbox flex="1">
+	      <caption>
+                <label control="Infini_lbl" value="Infini"/>
+	      </caption>
+	      <hbox>
+                <textbox id="Infini" flex="1" maxlength="16"/>
+              </hbox>
+              <label control="Infini_descr" value = "Valeur en m au-delà de laquelle un calcul est considéré comme non valide"/>
+            </groupbox>
+          </hbox>
+          <hbox>
+	    <groupbox flex="1">
+	      <caption>
+                <label control="Erreur_surface_acceptable_lbl" value="Erreur surface acceptable"/>
+	      </caption>
+	        <hbox>
+                  <textbox id="Erreur_surface_acceptable" flex="1" maxlength="16"/>
+                </hbox>
+                <label control="Erreur_surface_acceptable_descr" value = "Tolérance en m² acceptée lors de la simplification d'un sous-ilot"/>
+	    </groupbox>
+          </hbox>
+          <hbox>
+	    <groupbox flex="1">
+	      <caption>
+                <label control="Zoom_minimal" value="Zoom minimal"/>
+	      </caption>
+	        <hbox>
+                  <textbox id="Zoom_minimal" flex="1" maxlength="16"/>
+                </hbox>
+                <label control="Zoom_minimal_descr" value = "Facteur de zoom minimal"/>
+	    </groupbox>
+          </hbox>
+          <hbox>
+	    <groupbox flex="1">
+	      <caption>
+                <label control="Zoom_maximal_lbl" value="Zoom maximal"/>
+	      </caption>
+	        <hbox>
+                  <textbox id="Zoom_maximal" flex="1" maxlength="16"/>
+                </hbox>
+                <label control="Zoom_maximal_descr" value = "Facteur de zoom maximal"/>
+	    </groupbox>
+          </hbox>
+          <hbox>
+	    <groupbox flex="1">
+	      <caption>
+                <label control="Duree_doubleclic_lbl" value="Double-clic"/>
+	      </caption>
+	        <hbox>
+                  <textbox id="Duree_doubleclic" flex="1" maxlength="16"/>
+                </hbox>
+                <label control="Duree_doubleclic_descr" value = "Délai maximal en ms pour que 2 clics soient considérés comme un double-clic"/>
+	    </groupbox>
+          </hbox>
+        </vbox>
+      </deck>
+    </vbox>
+  </hbox>
+  
+  <separator/>
+     
+</dialog>

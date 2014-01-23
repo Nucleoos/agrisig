@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://agrisig/skin/icons.css" type="text/css"?>
+
+<window	id="gestsea-cotisation"	title="GestSEA - Saisie des cotisations" onload="cot_start();" width="640" height="480" orient="vertical" sizemode="normal" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script src="../generateur/utils_xul.js"/>
+  <script src="../generateur/pgsql.js"/>
+  <script src="gestsea_cotisation.js"/>
+<!--  <script src="cotiz.js"/>-->
+  
+  <vbox>
+    <stack flex="1" >
+      <image flex="1" height="58" width="606" src="banniere.jpg"/>
+      <description top="10" left="20" class="header">Cotisations adhérents GestSEA</description>
+      <description top="25" left="35">Déclarer des cotisations</description>
+      <hbox pack="end" style="padding: 3px;">
+        <image src="icone3.png"/>
+      </hbox>
+    </stack>
+    <separator flex="1" class="groove-thin"/>  
+  </vbox>
+  <hbox flex="1">
+    <vbox flex="1" style="overflow: auto;">
+      <description>Production(s) :</description>
+      <listbox id="c-production-list" flex="1" seltype="single" datasources="rdf:null" ref="SQL:ResultRoot" flags="dont-build-content">
+        <template>
+          <listitem flex="1" uri="rdf:*" type="checkbox" checked="rdf:http://www.mozilla.org/SQL-rdf#cr_cultive" label="rdf:http://www.mozilla.org/SQL-rdf#cr_libelle" value="rdf:http://www.mozilla.org/SQL-rdf#cr_numero"/>
+        </template>
+      </listbox>
+      <separator class="groove"/>
+      <checkbox id="c-production-autre-checkbox" label="Autre (précisez)"/>
+      <textbox id="c-production-autre-textbox"/>
+    </vbox>
+    <splitter/>
+    <vbox flex="1" style="overflow: auto;">
+      <hbox align="center">
+        <label value="Personne"/>
+        <menulist editable="true" id="c-personne-menulist" onchange="cot_select_personnes(); cot_charge_personne();" flex="2" seltype="single" datasources="rdf:null" ref="SQL:ResultRoot" flags="dont-build-content" oncommand="cot_charge_personne();" onselect="cot_charge_personne();">
+          <template>
+            <menupopup>
+              <menuitem uri="rdf:*" label="rdf:http://www.mozilla.org/SQL-rdf#pe_numpersonne rdf:http://www.mozilla.org/SQL-rdf#pe_titre rdf:http://www.mozilla.org/SQL-rdf#pe_nom rdf:http://www.mozilla.org/SQL-rdf#pe_prenom" value="rdf:http://www.mozilla.org/SQL-rdf#pe_numero"/>
+            </menupopup>
+           </template>
+      	</menulist>
+<!--      	<button label="Filtre" oncommand="cot_select_personnes(); cot_charge_personne();"/>-->
+      </hbox>
+
+
+
+
+
+<!-- Menulist des types de cotisation -->
+      <hbox align="center">
+      	<label value="1 Cotisation"/>
+        <radiogroup id="cotiz" orient="horizontal" value="4"  oncommand="cot_cotisation();">
+          <radio id="tarif1" label="Ancien" value="1"/>
+          <radio id="tarif2" label="Bailleur" value="2"/>
+          <radio id="tarif3" label="Ancien + Bailleur" value="3"/>
+          <radio id="tarif4" label="Exploitant" value="4" selected="true"/>
+          <radio id="tarif5" label="Ancien + Soutien" value="5"/>
+        </radiogroup>
+      </hbox>
+      <grid>
+      	<columns>
+          <column />
+          <column flex="1"/>
+          <column />
+        </columns>
+        <rows>
+          <row align="center">
+            <label value="2"/>
+            <checkbox id="c-cotisation-checkbox" label="Cotisation principale" checked="true" oncommand="cot_total();"/>
+            <hbox align="center">
+              <textbox disabled="true" flex="1" id="c-cotisation" value="0"/>
+              <label value="€"/>
+            </hbox>
+	  </row>
+          <row align="center">
+            <label value="3"/>
+            <vbox>
+              <checkbox id="c-culture-checkbox" label="Cotisation à l'hectare" oncommand="elem('c-culture-vbox').hidden=!this.checked; cot_total();"/>
+              <vbox id="c-culture-vbox" hidden="true">
+                <grid>
+                  <columns>
+                    <column flex="1"/>
+                    <column />
+                  </columns>
+                  <rows id="c-culture-rows" seltype="single" datasources="rdf:null" ref="SQL:ResultRoot" flags="dont-build-content">
+                    <template>
+                      <row uri="rdf:*">
+                 	<checkbox checked="false" label="rdf:http://www.mozilla.org/SQL-rdf#pd_libelle (rdf:http://www.mozilla.org/SQL-rdf#pd_tarif €/Ha)" numero="rdf:http://www.mozilla.org/SQL-rdf#pd_numero" oncommand="cot_total();"/>
+                        <textbox tarif="rdf:http://www.mozilla.org/SQL-rdf#pd_tarif" width="40" value="0" onchange="cot_total();"/>
+                      </row>
+                    </template>
+                  </rows>
+                </grid>
+              </vbox>
+            </vbox>
+            <hbox pack="end" align="start" flex="1">
+              <textbox disabled="true" flex="1" id="c-hectare" value="0"/>
+              <label value="€"/>
+            </hbox>
+          </row>
+          <row align="center">
+            <label value="4"/>
+            <checkbox id="c-conseil-checkbox" label="Abonnement conseil,..." oncommand="elem('c-conseil-menulist').disabled=!this.checked; cot_total();"/>
+            <menulist id="c-conseil-menulist" disabled="true" flex="1" seltype="single" datasources="rdf:null" ref="SQL:ResultRoot" flags="dont-build-content" oncommand="cot_total();">
+              <template>
+                <menupopup>
+                  <menuitem uri="rdf:*" label="rdf:http://www.mozilla.org/SQL-rdf#px_tarifttc €" tarif="rdf:http://www.mozilla.org/SQL-rdf#px_tarifttc" value="rdf:http://www.mozilla.org/SQL-rdf#pd_numero"/>
+                </menupopup>
+              </template>
+            </menulist>
+          </row>
+          <row align="center">
+            <label value="5"/>
+            <checkbox id="c-journal-checkbox" label="Abonnement journal AAVA" oncommand="elem('c-journal-menulist').disabled=!this.checked; cot_total();"/>
+            <menulist id="c-journal-menulist" disabled="true" flex="1" seltype="single" datasources="rdf:null" ref="SQL:ResultRoot" flags="dont-build-content" oncommand="cot_total()">
+              <template>
+                <menupopup>
+                  <menuitem uri="rdf:*" label="rdf:http://www.mozilla.org/SQL-rdf#px_tarifttc €" tarif="rdf:http://www.mozilla.org/SQL-rdf#px_tarifttc" value="rdf:http://www.mozilla.org/SQL-rdf#pd_numero"/>
+                </menupopup>
+              </template>
+            </menulist>
+          </row>
+	  <row align="center">
+            <label value="5.5"/>
+	    <hbox align="center">
+              <label value="Début"/>
+              <textbox id="c-journal-debut" width="50" value="1"/>
+              <label value="Fin"/>
+              <textbox id="c-journal-fin" width="50"  value="22"/>
+              <label value="Nb. Ex."/>
+              <textbox id="c-journal-nbex" width="50" value="1" onchange="cot_total()" oncommand="cot_total()"/>
+	      <label id="c-journal-total"/>
+	    </hbox>
+            <menulist id="c-journal-adresse" flex="1" seltype="single" datasources="rdf:null" ref="SQL:ResultRoot" flags="dont-build-content">
+              <template>
+                <menupopup>
+                  <menuitem uri="rdf:*" label="rdf:http://www.mozilla.org/SQL-rdf#ad_libelle" value="rdf:http://www.mozilla.org/SQL-rdf#ad_numero"/>
+                </menupopup>
+              </template>
+            </menulist>	  
+	  </row>
+          <separator flex="1" class="groove"/>
+          <row>
+            <label value=""/>
+            <hbox>
+              <description class="header">Total</description>
+              <label id="c-total-appel" value="(Montant appelé inconnu)"/>
+            </hbox>
+            <hbox align="center">
+              <textbox disabled="true" flex="1" id="c-total" value=""/>
+              <label value="€"/>
+            </hbox>
+          </row>  
+        </rows>
+      </grid>
+      <hbox flex="1"/>
+      <groupbox orient="vertical">
+        <caption label="Réglement"/>
+	<radiogroup orient="vertical">
+
+          <radio id="c-tierspayeur" label="Tiers payeur "/>
+
+          <hbox align="center">
+            <label value="Payé par le groupement "/>
+            <menulist editable="true" id="c-payeur-menulist" flex="2" seltype="single" datasources="rdf:null" ref="SQL:ResultRoot" flags="dont-build-content" oncommand="cot_charge_reg();" onselect="cot_charge_reg();">
+              <template>
+                <menupopup>
+                  <menuitem uri="rdf:*" label="rdf:http://www.mozilla.org/SQL-rdf#pe_numpersonne rdf:http://www.mozilla.org/SQL-rdf#pe_nom" value="rdf:http://www.mozilla.org/SQL-rdf#pe_numero"/>
+                </menupopup>
+              </template>
+      	    </menulist>
+	    <button label="Rafraîchir" onclick="cot_charge_tiers_payeurs();"/>
+          </hbox>
+
+
+          <hbox align="center">
+	    <label value="Réglement servant à payer la cotisation"/>
+            <menulist editable="true" id="c-payeur-reg-menulist" flex="2" seltype="single" datasources="rdf:null" ref="SQL:ResultRoot" flags="dont-build-content">
+              <template>
+                <menupopup>
+                  <menuitem uri="rdf:*" label="rdf:http://www.mozilla.org/SQL-rdf#rg_numero - rdf:http://www.mozilla.org/SQL-rdf#rg_montant euros" value="rdf:http://www.mozilla.org/SQL-rdf#rg_numero"/>
+                </menupopup>
+              </template>
+      	    </menulist>
+	    <button label="Rafraîchir" onclick="cot_charge_reg();"/>
+          </hbox>
+
+
+        <radio id="c-direct" label="Adhérent direct :" selected="true"/>
+
+
+        <hbox align="center">
+          <label value="Montant du réglement"/>
+          <textbox id="c-reglement-montant" flex="1" value="0"/>
+        </hbox>
+        <hbox align="center">
+          <label value="Date"/>
+          <textbox id="c-reglement-date" value="01/01/2006"/>
+        </hbox>
+        <hbox align="center">
+          <label value="Réglement par"/>
+          <menulist id="c-modereglement" flex="1" seltype="single" datasources="rdf:null" ref="SQL:ResultRoot" flags="dont-build-content">
+            <template>
+              <menupopup>
+                <menuitem uri="rdf:*" label="rdf:http://www.mozilla.org/SQL-rdf#mr_libelle" value="rdf:http://www.mozilla.org/SQL-rdf#mr_numero"/>
+              </menupopup>
+            </template>
+          </menulist>
+        </hbox>
+        <hbox align="center">
+          <label value="Libellé banque"/>
+          <textbox flex="1" id="c-libelle-banque"/>
+        </hbox>
+        <hbox>
+          <label value="N° Compte"/>
+          <textbox flex="1" id="c-reglement-compte"/>
+        </hbox>
+        <hbox>
+          <label value="N° Chèque"/>
+          <textbox flex="1" id="c-reglement-cheque"/>
+        </hbox>
+
+      
+        </radiogroup>
+
+
+      </groupbox>
+    </vbox>
+  </hbox>
+  <separator class="groove"/>
+  <hbox pack="end" align="center" height="31">
+    <button label="Valider" oncommand="if (confirm('Voulez-vous valider la saisie de cette cotisation ?')) cot_valide();"/>
+  </hbox>
+<!--
+  <separator class="groove-thin"/>
+  <hbox align="center" pack="center">
+    <label value="Reglement à efectuer : "/>
+    <radiogroup orient="horizontal">
+      <radio label="par CCP 1259-31 à Bordeaux" selected="true"/>
+      <radio label="par cheque bancaire"/>
+       <radio label="en espèce"/>
+     </radiogroup>
+  </hbox>
+-->  
+</window>

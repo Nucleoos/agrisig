@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<overlay id="agrisigTasksOverlay"
+    xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script type="application/x-javascript">
+  <![CDATA[
+    function toAgriSIG() {
+      if (!CycleWindow("agrisig:main")) 
+    	  NewAgriSIGWindow();
+    }
+    function NewAgriSIGWindow() {
+      // Open AgriSIG window
+      toOpenWindowByType('agrisig:main', 'chrome://agrisig/content/');
+    }
+  ]]>
+</script>
+  
+  <menupopup id="taskPopup">
+    <menuitem 
+      id="agrisig-menuitem" 
+      label="AgriSIG" 
+    	oncommand="toAgriSIG()" />
+  </menupopup>
+  
+  <menupopup id="menu_ToolsPopup">
+    <menuitem
+    	id="agrisig-menuitem" 
+    	label="AgriSIG" 
+    	oncommand="NewAgriSIGWindow()"/>
+  </menupopup> 
+  
+</overlay>
+
+ 
+  
+  

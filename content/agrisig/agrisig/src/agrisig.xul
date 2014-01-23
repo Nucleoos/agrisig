@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://agrisig/skin/icons.css" type="text/css"?>
+
+<window	id="agrisig-generateur"	title="Générateur d'AgriSIG" orient="vertical" sizemode="normal" xmlns:html="http://www.w3.org/1999/xhtml" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script src="chrome://agrisig/content/agrisig/lib/pgsql.js"/>
+  <script src="chrome://agrisig/content/agrisig/lib/pointer.js"/>
+  <script src="chrome://agrisig/content/agrisig/lib/generateur_interface_sql.js"/>
+  <script src="chrome://agrisig/content/agrisig/lib/generateur_interface_xul.js"/>
+  <script src="chrome://agrisig/content/agrisig/lib/libIO.js"/>
+  <script src="chrome://agrisig/content/agrisig/lib/generateur_interface_lib.js"/>
+  <script src="chrome://agrisig/content/agrisig/src/agrisig-principal.js"/>
+  <groupbox>
+    <caption label="Générations des modules"/>
+    <grid>
+      <columns>
+        <column flex="3"/>
+        <column flex="1"/>
+      </columns>
+      <rows>
+        <row>
+          <button label="Générer l'overlay 'AgriSIG'"  oncommand="CodeIn(true);"/>
+          <button label="Ouvrir" oncommand="window.open('chrome://agrisig/content/agrisig/bin/agrisig_SVG.xul');"/>
+        </row>
+        <row>
+          <button label="Générer la fenêtre 'AgriSIG'" oncommand="CodeIn(false);"/>
+          <button label="Ouvrir" oncommand="window.open('chrome://agrisig/content/agrisig/bin/agrisig_window.xul');"/>
+        </row>
+      </rows>
+    </grid>
+  </groupbox>
+  <hbox>
+    <button label="Gérer les alias" oncommand="pgsql_configaliases();"/>
+    <button label="Venkman Debugger" oncommand="window.open('chrome://venkman/content/','JavaScript Debugger','chrome,centerscreen,resizable');"/>
+  </hbox>
+  <vbox flex="1" style="overflow:auto;height:160px;width:160px;">
+    <textbox id="res" flex="1" multiline="true" value="" />
+  </vbox>
+
+</window>

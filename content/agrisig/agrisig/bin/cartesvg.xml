@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<svg:svg id="canvas"
+	xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:svg="http://www.w3.org/2000/svg">
+<!--change l'opacité du sous-îlot pointé ; cette fonction est désactivée pour ne pas ralentir les machines les plus lentes
+	<style type="text/css">
+		path:hover{fill-opacity:0.1;}
+	</style>
+-->
+	<svg:g id="ensemble" transform="scale(1,-1)"><!--groupe contenant tous les objets SVG ; l'échelle de -1 en Y permet d'avoir un affichage des sous-îlots dans le bon sens (par défaut l'axe des ordonnées est orienté vers le bas)-->
+		<svg:g id="texte" transform="scale(30,30) translate(0,0)"/><!--groupe contenant les textes-->
+		<svg:g id="sousilots" transform="scale(30) translate(0,0)"/><!--groupe contenant les sous-îlots-->
+		<svg:g id="points" transform="scale(30) translate(0,0)"/><!--groupe contenant les points noirs-->
+		<svg:g id="points_temporaires" transform="scale(30) translate(0,0)"><!--groupe contenant les points temporaires et le tracé (orange)-->
+			<svg:polyline id="trace" points="" stroke="orange" style="fill:none;"/>
+		</svg:g>
+		<svg:g id="lignes" transform="scale(30) translate(0,0)"><!--groupe contenant les lignes rouges-->
+			<svg:line id="ligne1" x1="0" y1="0" x2="0" y2="0" stroke="red"/>
+			<svg:line id="ligne2" x1="0" y1="0" x2="0" y2="0" stroke="red"/>
+		</svg:g>
+		<svg:g id="gcurseur" transform="scale(30) translate(0,0)"><!--groupe des points utilisés comme curseurs-->
+			<svg:circle id="curseur4" cx="0" cy="0" r="0" style="fill:blue;"/>
+			<svg:circle id="curseur3" cx="0" cy="0" r="0" style="fill:green;"/>
+			<svg:circle id="curseur2" cx="0" cy="0" r="0" style="fill:yellow;"/>
+			<svg:circle id="curseur1" cx="0" cy="0" r="0" style="fill:red;"/>
+		</svg:g>
+		<svg:g id="centre" transform="scale(30) translate(0,0)"><!--croix jaune formant le point de référence-->
+			<svg:line id="centre1" x1="-1" y1="1" x2="1" y2="-1" stroke="yellow"/>
+			<svg:line id="centre2" x1="-1" y1="-1" x2="1" y2="1" stroke="yellow"/>
+		</svg:g>
+	</svg:g>
+</svg:svg>

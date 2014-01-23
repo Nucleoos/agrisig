@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://agrisig/skin/icons.css" type="text/css"?>
+<!-- CE FICHIER A ETE GENERE PAR GENERATEUR_INTERFACE_LIB -->
+
+<window
+	id="Page_Interface"
+	title="Page de Interface"
+	orient="horizontal"
+	sizemode="normal"
+	onload="Charger_Interface();"
+	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<!-- FICHIERS DE SCRIPTS NECESSAIRES -->
+
+<script src="pgsql.js"/>
+<script src="pointer.js"/>
+<script src="generateur_interface_sql.js"/>
+<script src="generateur_interface_xul.js"/>
+<script src="Interface.js"/>
+
+<!-- COMPOSANT OU SE DESSINERONT LES COMPOSANTS -->
+
+<hbox flex="1">
+<vbox id="0_Maitre" flex="1"/>
+<splitter collapse="none" />
+<vbox flex="3"  style="overflow:auto">
+<vbox id="0_Slaves"/>
+<vbox flex="1">
+<hbox flex="1">
+<vbox id="1_Maitre" flex="1"/>
+<splitter collapse="none" />
+<vbox flex="3"  style="overflow:auto">
+<vbox id="1_Slaves"/>
+<vbox flex="1">
+</vbox>
+</vbox>
+</hbox>
+<hbox flex="1">
+<vbox id="2_Maitre" flex="1"/>
+<splitter collapse="none" />
+<vbox flex="3"  style="overflow:auto">
+<vbox id="2_Slaves"/>
+<vbox flex="1">
+</vbox>
+</vbox>
+</hbox>
+</vbox>
+</vbox>
+</hbox>
+</window>
